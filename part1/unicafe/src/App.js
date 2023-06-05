@@ -1,29 +1,43 @@
 import { useState } from 'react'
 
+const StatisticLine = ({ text, value }) => {
+  return (
+    <>
+      <tr>
+        <td>{text}</td>
+        <td>{value}</td>
+      </tr>
+    </>
+  )
+}
+
 const Statistics = ({ good, neutral, bad, total, allClicks}) => {
   const average = ((good - bad) / total) || 0
   const positive = ((good / total) * 100) || 0
-  
+
   if (total === 0) {
     return (
-      <div>
+      <>
         <br></br>
         No feedback given
-      </div>
+      </>
     )
-  }
+  }//added an extra line to show the feedback history in an array
   return (
-    <div>
+    <>
       <h2>Statistics</h2>
-      <div>good: {good}</div>
-      <div>neutral: {neutral}</div>
-      <div>bad: {bad}</div>
-      <div>total: {total}</div>
-      <div>average: {average}</div>
-      <div>positive: {positive}%</div>
-      <br></br>
+      <table>
+        <tbody>
+          <StatisticLine text='good' value={good} />
+          <StatisticLine text='neutral' value={neutral} />
+          <StatisticLine text='bad' value={bad} />
+          <StatisticLine text='total' value={total} />
+          <StatisticLine text='average' value={average} />
+          <StatisticLine text='positive' value={positive} />
+        </tbody>
+      </table>
       <div>Feedback history: {allClicks.join(' ')}</div>
-    </div>
+    </>
   )
 }
 
@@ -57,13 +71,19 @@ const App = () => {
   }
   
   return (
-    <div>
+    <>
       <h1>Give Feedback</h1>
-      <Button handleClick={handleGoodClick} text='good'/>
-      <Button handleClick={handleNeutralClick} text='neutral' />
-      <Button handleClick={handleBadClick} text='bad' />
+      <table>
+        <tbody>
+          <tr>
+            <td><Button handleClick={handleGoodClick} text='good'/></td>
+            <td><Button handleClick={handleNeutralClick} text='neutral' /></td>
+            <td><Button handleClick={handleBadClick} text='bad' /></td>
+          </tr>
+        </tbody>
+      </table>
       <Statistics good={good} neutral={neutral} bad={bad} total={total} allClicks={allClicks}/>
-    </div>
+    </>
   )
 }
 
